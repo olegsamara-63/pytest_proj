@@ -9,8 +9,12 @@ def get(array, index, default=None):
     :return: значение по индексу или значение по-умолчанию.
     """
 
-    if 0 <= index < len(array):
+    if index < 0: #проверка на отрицательный индекс
+        return default
+
+    if 0 <= index < len(array): 
         return array[index]
+
     return default
 
 
@@ -32,12 +36,23 @@ def my_slice(coll, start=None, end=None):
 
     if start is None:
         normalized_start = 0
+    elif start < 0:
+       normalized_start = max(0, length + start) 
     else:
-        normalized_start = start
+        normalized_start = min(length, start) #без выхода за пределы Макс и Мин
 
-    if end is None or end > length:
+##########
+
+    if end is None:
         normalized_end = length
+    elif end < 0:
+       normalized_end = min(length, end)  
     else:
-        normalized_end = end
+        normalized_end = min(length, end) #без того, что бы был выход их Мин
+
+
+
+    if normalized_start >= normalized_end:
+        return []
 
     return coll[normalized_start:normalized_end]
